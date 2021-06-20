@@ -17,24 +17,43 @@ class ideal_gas():
         for i in range(1,len(self.table_duplicate)):
             #print(self.table_duplicate[i])
             self.table.append([float(k) for k in self.table_duplicate[i]])
-        print(self.table)
-            
-            
-    #def interpolatre(raw_upper,raw_lower,column,real_value):
-        #used to find values in between the values available in the table
-
-
     
+            
+            
+    def interpolate(self,idx0,idx1,column,real_value):
+        #used to find values in between the values available in the table
+        upper_row  = self.table[idx0]   
+        lower_row = self.table[idx1]
+        btw_val = []  
+        
+        x0 = real_value  
+        x1 = upper_row[column]  
+        x2 = lower_row[column]
+        for i in range(len(upper_row)):
+            if i == 5:                        
+                y1 = upper_row[i]
+                y2 = lower_row[i]
+                y0 = y1 - (abs(y2-y1)/abs(x2-x1)) * abs(x0 -x1) 
+                btw_val.append(y0)   
+                continue
+            y1 = upper_row[i]   
+            y2 = lower_row[i]
+            y0 = y1 + (abs(y2-y1)/abs(x2-x1)) * abs(x0 -x1)  
+            btw_val.append(y0)
+        return btw_val
 
         
     def check_in_between(self,column,var):
-        #used to get raw above and below in the table if the variable value is not given in the table
-        for i in range(1,len(self.table)):
-            if var> self.table[i][column]:
-                if var<self.table[i-1][column]:
-                    return[self.table[i-1],i]
-                else:
-                    return[i,self.table[i+1]]
+         #used to get raw above and below in the table if the variable value is not given in the table
+        for i in range(len(self.table)):
+            if var < self.table[i][column] and column != 5:    
+                idx0,idx1 = i-1,i
+                interp_val = self.interpolate(idx0,idx1,column,var)
+                return interp_val
+            elif var > self.table[i][column] and column == 5:  
+                idx0,idx1 = i-1,i
+                interp_val = self.interpolate(idx0,idx1,column,var)
+                return interp_val
                 
     def check_in_table(self,column,var):
         #checks if the given value is in the table
@@ -42,7 +61,7 @@ class ideal_gas():
             if self.table[i][column]==var:
                 return self.table[i]
             
-    def find_raw(self,variable,var_value):
+    def find_row(self,variable,var_value):
         #given a property find in wich raw the property belongs in the table
         #if not in the table interpolate to find the values
         column=None
@@ -65,11 +84,11 @@ class ideal_gas():
             if y!=None:
                 return y
             else:
-                print("bai")
                 return self.check_in_between(column,var_value)
                 
-a=ideal_gas()        
-        
+gas=ideal_gas()
+values = gas.find_row("T",327)
+print("Property values of air : ",values)
         
         
             
