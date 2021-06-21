@@ -77,7 +77,7 @@ class ideal_gas():
         elif variable=="VR":
             column=5
         else:
-            print("enter a property variable {T,H,U,PR,VR}")
+            print("enter a property variable {T,H,U,S0,PR,VR}")
         if column!=None:
             y=self.check_in_table(column,var_value)
             if y!=None:
@@ -86,8 +86,14 @@ class ideal_gas():
                 return self.check_in_between(column,var_value)
                 
 gas=ideal_gas()
-values = gas.find_row("T",325)
-print("Property values of air : ",values)
+prop = ["Temperature","Enthalpy","Internal Energy","Entropy","Pressure","Volume"]
+var = input("Enter a property variable {T,H,U,S0,PR,VR}: ")
+var = var.upper()
+val = int(input("Input the property Value : "))
+values = gas.find_row(var,val)
+print("Property values of air "+"for",var,"=",val,"is :")
+for c,p in enumerate(prop):
+    print(p,"=",values[c])
         
         
             
