@@ -1,3 +1,5 @@
+import numpy as np
+
 class ideal_gas():
     def __init__(self):
         #initialize properties
@@ -11,12 +13,8 @@ class ideal_gas():
         self.table=[]
         #read in the air data properties and save it to self.data
         with open("ideal_gas_properties_of_air.csv") as f:
-            self.table_duplicate= [line.split() for line in f]
-        for i in range(len(self.table_duplicate)):
-            self.table_duplicate[i]=self.table_duplicate[i][0].split(",")
-        for i in range(1,len(self.table_duplicate)):
-            #print(self.table_duplicate[i])
-            self.table.append([float(k) for k in self.table_duplicate[i]])
+            self.table = np.genfromtxt(f,delimiter=",",skip_header=1)
+        np.set_printoptions(suppress=True)
     
             
             
@@ -44,7 +42,7 @@ class ideal_gas():
 
         
     def check_in_between(self,column,var):
-         #used to get raw above and below in the table if the variable value is not given in the table
+         #used to get row above and below in the table if the variable value is not given in the table
         for i in range(len(self.table)):
             if var < self.table[i][column] and column != 5:    
                 idx0,idx1 = i-1,i
@@ -60,9 +58,10 @@ class ideal_gas():
         for i in range(1,len(self.table)):
             if self.table[i][column]==var:
                 return self.table[i]
+            else: return None
             
     def find_row(self,variable,var_value):
-        #given a property find in wich raw the property belongs in the table
+        #given a property find in wich row the property belongs in the table
         #if not in the table interpolate to find the values
         column=None
         if variable=="T":
@@ -87,7 +86,7 @@ class ideal_gas():
                 return self.check_in_between(column,var_value)
                 
 gas=ideal_gas()
-values = gas.find_row("T",327)
+values = gas.find_row("T",325)
 print("Property values of air : ",values)
         
         
