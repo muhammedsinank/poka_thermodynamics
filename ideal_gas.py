@@ -15,7 +15,7 @@ class ideal_gas():
         with open("ideal_gas_properties_of_air.csv") as f:
             self.table = np.genfromtxt(f,delimiter=",",skip_header=1)
         np.set_printoptions(suppress=True)
-    
+        
             
             
     def interpolate(self,idx0,idx1,column,real_value):
@@ -32,12 +32,12 @@ class ideal_gas():
                 y1 = upper_row[i]
                 y2 = lower_row[i]
                 y0 = y1 - (abs(y2-y1)/abs(x2-x1)) * abs(x0 -x1) 
-                btw_val.append(y0)   
+                btw_val.append(round(y0,4))   
                 continue
             y1 = upper_row[i]   
             y2 = lower_row[i]
             y0 = y1 + (abs(y2-y1)/abs(x2-x1)) * abs(x0 -x1)  
-            btw_val.append(y0)
+            btw_val.append(round(y0,4))
         return btw_val
 
         
@@ -89,14 +89,12 @@ gas=ideal_gas()
 prop = ["Temperature","Enthalpy","Internal Energy","Entropy","Pressure","Volume"]
 var = input("Enter a property variable {T,H,U,S0,PR,VR}: ")
 var = var.upper()
-val = int(input("Input the property Value : "))
+val = float(input("Input the property Value : "))
 values = gas.find_row(var,val)
-print("Property values of air "+"for",var,"=",val,"is :")
+print("Property values of air for",var,"=",val,"is :")
 for c,p in enumerate(prop):
     print(p,"=",values[c])
         
-        
-            
            
 
         
