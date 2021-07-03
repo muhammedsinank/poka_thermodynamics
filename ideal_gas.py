@@ -3,12 +3,12 @@ import numpy as np
 class ideal_gas():
     def __init__(self):
         #initialize properties
-        self.pressure=None
-        self.volume=None
-        self.temprature=None
-        self.internal_energy=None
-        self.enthalpy=None
-        self.entropy=None
+        self.Pr=None
+        self.Vr=None
+        self.T=None
+        self.U=None
+        self.H=None
+        self.S0=None
         self.R=8.3145
         self.table=[]
         #read in the air data properties and save it to self.data
@@ -17,7 +17,16 @@ class ideal_gas():
         np.set_printoptions(suppress=True)
         
             
-            
+    def set_state(self,var,val):
+        #this function sets the state of our ideal gas we can retrieve propperties after setting any single state variable
+        properties=self.find_row(var,val)
+        self.Pr=properties[4]
+        self.Vr=properties[5]
+        self.T=properties[0]
+        self.U=properties[2]
+        self.H=properties[1]
+        self.S0=properties[3]
+        
     def interpolate(self,idx0,idx1,column,real_value):
         #used to find values in between the values available in the table
         upper_row  = self.table[idx0]   
@@ -85,15 +94,15 @@ class ideal_gas():
             else:
                 return self.check_in_between(column,var_value)
                 
-gas=ideal_gas()
-prop = ["Temperature","Enthalpy","Internal Energy","Entropy","Pressure","Volume"]
-var = input("Enter a property variable {T,H,U,S0,PR,VR}: ")
-var = var.upper()
-val = float(input("Input the property Value : "))
-values = gas.find_row(var,val)
-print("Property values of air for",var,"=",val,"is :")
-for c,p in enumerate(prop):
-    print(p,"=",values[c])
+#gas=ideal_gas()
+##prop = ["Temperature","Enthalpy","Internal Energy","Entropy","Pressure","Volume"]
+##var = input("Enter a property variable {T,H,U,S0,PR,VR}: ")
+##var = var.upper()
+##val = float(input("Input the property Value : "))
+##values = gas.find_row(var,val)
+##print("Property values of air for",var,"=",val,"is :")
+##for c,p in enumerate(prop):
+##    print(p,"=",values[c])
         
            
 
