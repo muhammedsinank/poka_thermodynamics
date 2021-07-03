@@ -94,16 +94,7 @@ class ideal_gas():
             else:
                 return self.check_in_between(column,var_value)
                 
-#gas=ideal_gas()
-##prop = ["Temperature","Enthalpy","Internal Energy","Entropy","Pressure","Volume"]
-##var = input("Enter a property variable {T,H,U,S0,PR,VR}: ")
-##var = var.upper()
-##val = float(input("Input the property Value : "))
-##values = gas.find_row(var,val)
-##print("Property values of air for",var,"=",val,"is :")
-##for c,p in enumerate(prop):
-##    print(p,"=",values[c])
-        
+
            
 
         
